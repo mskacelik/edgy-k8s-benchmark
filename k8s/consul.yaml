@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+spec:
+  selector:
+    app: consul
+  ports:
+    - port: 8500
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      # The namespace enforces the restricted Pod Security Standard.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: 100
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: consul
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          image: hashicorp/consul:1.22
+          args:
+            - consul
+            - agent
+            - -dev
+            - -config-dir=/consul/config
+            - -client=0.0.0.0
+            - -log-level=warn
+          ports:
+            - containerPort: 8500
+          volumeMounts:
+            - name: registration
+              mountPath: /consul/config
+          readinessProbe:
+            httpGet: { path: /v1/status/leader, port: 8500 }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            requests: { cpu: "1", memory: 1Gi }
+            limits: { cpu: "1", memory: 1Gi }
+      volumes:
+        - name: registration
+          configMap:
+            name: consul-registration

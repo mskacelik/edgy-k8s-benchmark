@@ -1,0 +1,29 @@
+ARG BASE_IMAGE=bench-base:dev
+
+# BUILDPLATFORM: jars are architecture-independent, so the build stage runs
+# natively even when the runtime stage targets another architecture.
+FROM --platform=$BUILDPLATFORM registry.access.redhat.com/ubi9/openjdk-21:1.24 AS build
+USER root
+WORKDIR /build
+# Edgy is not published to any remote repository, so it arrives as a build context.
+COPY --from=m2repo . /tmp/m2-edgy/
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+COPY backend-service/pom.xml backend-service/pom.xml
+COPY edgy-gateway/pom.xml edgy-gateway/pom.xml
+COPY scg-gateway/pom.xml scg-gateway/pom.xml
+COPY edgy-gateway/src edgy-gateway/src
+RUN microdnf install -y gzip && chmod +x mvnw
+RUN --mount=type=cache,target=/root/.m2/repository \
+    mkdir -p /root/.m2/repository/org/acme && \
+    cp -r /tmp/m2-edgy/. /root/.m2/repository/org/acme/ && \
+    ./mvnw -pl edgy-gateway package -DskipTests
+
+FROM ${BASE_IMAGE}
+
+COPY --from=build --chown=185 /build/edgy-gateway/target/quarkus-app/lib/     /deployments/lib/
+COPY --from=build --chown=185 /build/edgy-gateway/target/quarkus-app/*.jar    /deployments/
+COPY --from=build --chown=185 /build/edgy-gateway/target/quarkus-app/app/     /deployments/app/
+COPY --from=build --chown=185 /build/edgy-gateway/target/quarkus-app/quarkus/ /deployments/quarkus/
+
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"

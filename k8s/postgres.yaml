@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      # The namespace enforces the restricted Pod Security Standard.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+        - name: postgres
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          image: postgres:17
+          envFrom:
+            - secretRef:
+                name: db-credentials
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: seed
+              mountPath: /docker-entrypoint-initdb.d
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          readinessProbe:
+            # Waits for the seeded data, not just the socket: pg_isready passes
+            # while the init script is still inserting a million rows.
+            exec:
+              command: ["sh", "-c", "psql -U bench -d bench -tAc 'SELECT 1 FROM item LIMIT 1' | grep -q 1"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 60
+          resources:
+            requests: { cpu: "4", memory: 8Gi }
+            limits: { cpu: "4", memory: 8Gi }
+      volumes:
+        - name: seed
+          configMap:
+            name: db-seed
+        # No PVC: the data is seeded and read-only, and the default storage class
+        # is NFS-backed, which has no business under a database being measured.
+        - name: data
+          emptyDir: {}

@@ -1,0 +1,31 @@
+# Pinned by digest, not by the floating jdk-25 tag: this is the one image whose
+# identity the Edgy-commit tagging scheme does not already fix.
+ARG MANDREL_IMAGE=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image@sha256:c0ff31764f70469795db5513d674e4721fd8e7e761beddbff741ef5d84e79ed3
+
+FROM ${MANDREL_IMAGE} AS build
+USER root
+WORKDIR /build
+COPY --from=m2repo . /tmp/m2-edgy/
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+COPY backend-service/pom.xml backend-service/pom.xml
+COPY edgy-gateway/pom.xml edgy-gateway/pom.xml
+COPY scg-gateway/pom.xml scg-gateway/pom.xml
+COPY edgy-gateway/src edgy-gateway/src
+RUN microdnf install -y gzip && chmod +x mvnw
+RUN --mount=type=cache,target=/root/.m2/repository \
+    mkdir -p /root/.m2/repository/org/acme && \
+    cp -r /tmp/m2-edgy/. /root/.m2/repository/org/acme/ && \
+    ./mvnw -pl edgy-gateway package -DskipTests -Dnative
+
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6
+
+WORKDIR /work
+COPY --from=build --chown=1001:root --chmod=0755 /build/edgy-gateway/target/*-runner /work/application
+
+EXPOSE 8080
+USER 1001
+
+# The native runtime has its own collector and its own heap knob; neither can be
+# matched to the JVM arms, so both are declared in the environment table instead.
+ENTRYPOINT ["./application", "-Dquarkus.http.host=0.0.0.0", "-XX:MaximumHeapSizePercent=75"]

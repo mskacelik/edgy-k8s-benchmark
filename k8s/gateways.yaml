@@ -1,0 +1,139 @@
+# Both start at replicas: 0. Scale up only the arm under test, so the other
+# gateway never competes for the namespace quota during a run.
+apiVersion: v1
+kind: Service
+metadata:
+  name: edgy-gateway
+spec:
+  selector:
+    app: edgy-gateway
+  ports:
+    - port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scg-gateway
+spec:
+  selector:
+    app: scg-gateway
+  ports:
+    - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edgy-gateway
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: edgy-gateway
+  template:
+    metadata:
+      labels:
+        app: edgy-gateway
+        role: gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: role
+                      operator: In
+                      values: [backend, database]
+      # The namespace enforces the restricted Pod Security Standard.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: gateway
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          image: ghcr.io/mskacelik/bench-edgy-gateway
+          envFrom:
+            - configMapRef:
+                name: gateway-env
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: tls
+              mountPath: /deployments/tls
+              readOnly: true
+          readinessProbe:
+            httpGet: { path: /api/items/1, port: 8080 }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            requests: { cpu: "2", memory: 2Gi }
+            limits: { cpu: "2", memory: 2Gi }
+      volumes:
+        - name: tls
+          secret:
+            secretName: gateway-tls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scg-gateway
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: scg-gateway
+  template:
+    metadata:
+      labels:
+        app: scg-gateway
+        role: gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: role
+                      operator: In
+                      values: [backend, database]
+      # The namespace enforces the restricted Pod Security Standard.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: gateway
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          image: ghcr.io/mskacelik/bench-scg-gateway
+          envFrom:
+            - configMapRef:
+                name: gateway-env
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: tls
+              mountPath: /deployments/tls
+              readOnly: true
+          readinessProbe:
+            httpGet: { path: /api/items/1, port: 8080 }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            requests: { cpu: "2", memory: 2Gi }
+            limits: { cpu: "2", memory: 2Gi }
+      volumes:
+        - name: tls
+          secret:
+            secretName: gateway-tls

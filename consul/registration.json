@@ -1,0 +1,16 @@
+{
+  "services": [
+    {
+      "id": "backend-a",
+      "name": "backend-service",
+      "address": "backend-a",
+      "port": 8443
+    },
+    {
+      "id": "backend-b",
+      "name": "backend-service",
+      "address": "backend-b",
+      "port": 8443
+    }
+  ]
+}

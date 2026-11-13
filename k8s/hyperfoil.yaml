@@ -1,0 +1,83 @@
+# Hyperfoil without the operator, which this namespace cannot install (no CRD
+# rights). The controller creates and deletes agent pods itself through the API,
+# which is what the Role below grants, so agent scale-out is kept.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hyperfoil-controller
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hyperfoil-controller
+rules:
+  # Narrower than the upstream manifest, which asks for "*" on pods plus
+  # pods/finalizer. A namespace user cannot grant either, so the Role is cut to
+  # what this account actually holds and what the deployer needs: manage agent
+  # pods, read their logs and status.
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [get, list, watch, create, update, patch, delete, deletecollection]
+  - apiGroups: [""]
+    resources: [pods/log, pods/status]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hyperfoil-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hyperfoil-controller
+subjects:
+  - kind: ServiceAccount
+    name: hyperfoil-controller
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperfoil
+spec:
+  selector:
+    app: hyperfoil
+  ports:
+    - port: 8090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hyperfoil
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperfoil
+  template:
+    metadata:
+      labels:
+        app: hyperfoil
+    spec:
+      # The namespace enforces the restricted Pod Security Standard.
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: hyperfoil-controller
+      containers:
+        - name: hyperfoil
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          image: quay.io/hyperfoil/hyperfoil:latest
+          command:
+            - /deployment/bin/controller.sh
+            - -Dio.hyperfoil.deploy.timeout=120000
+            - -Dio.hyperfoil.deployer=k8s
+            - -Dio.hyperfoil.controller.host=0.0.0.0
+          ports:
+            - containerPort: 8090
+          resources:
+            requests: { cpu: "1", memory: 2Gi }
+            limits: { cpu: "1", memory: 2Gi }
