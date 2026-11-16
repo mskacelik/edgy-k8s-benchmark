@@ -55,7 +55,7 @@ jobs:
       # only be built against a checkout that this job installs itself.
       - name: Install Edgy
         working-directory: .edgy
-        run: ./mvnw -B -q install -DskipTests
+        run: ./mvnw -B install -DskipTests
 
       - uses: docker/setup-buildx-action@v3
 
