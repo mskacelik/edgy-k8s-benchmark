@@ -81,25 +81,25 @@ jobs:
             docker buildx build --platform linux/amd64 \
               --label "org.opencontainers.image.revision=$SHA" \
               --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
-              $OUTPUT "$@" .
+              $OUTPUT "$@"
           }
 
           build -t "$BASE" -f base/Dockerfile base
           build -t "$REGISTRY/bench-backend:$TAG" \
             -f backend-service/src/main/docker/Dockerfile.jvm \
-            --build-arg "BASE_IMAGE=$BASE"
+            --build-arg "BASE_IMAGE=$BASE" .
           build -t "$REGISTRY/bench-edgy-gateway:$TAG" \
             -f edgy-gateway/src/main/docker/Dockerfile.jvm \
             --build-arg "BASE_IMAGE=$BASE" \
-            --build-context "m2repo=$HOME/.m2/repository/org/acme"
+            --build-context "m2repo=$HOME/.m2/repository/org/acme" .
           build -t "$REGISTRY/bench-scg-gateway:$TAG" \
             -f scg-gateway/src/main/docker/Dockerfile \
-            --build-arg "BASE_IMAGE=$BASE"
+            --build-arg "BASE_IMAGE=$BASE" .
 
           if [[ "${{ inputs.native }}" == "true" ]]; then
             build -t "$REGISTRY/bench-edgy-gateway-native:$TAG" \
               -f edgy-gateway/src/main/docker/Dockerfile.native \
-              --build-context "m2repo=$HOME/.m2/repository/org/acme"
+              --build-context "m2repo=$HOME/.m2/repository/org/acme" .
           fi
 
           echo "### Images built at tag \`$TAG\`" >> "$GITHUB_STEP_SUMMARY"
