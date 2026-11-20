@@ -23,6 +23,7 @@
 
         <compiler-plugin.version>3.15.0</compiler-plugin.version>
         <surefire-plugin.version>3.5.2</surefire-plugin.version>
+        <native-plugin.version>0.10.6</native-plugin.version>
 
         <ubi9.jdk.image>registry.access.redhat.com/ubi9/openjdk-21:1.24</ubi9.jdk.image>
         <ubi9.runtime.image>registry.access.redhat.com/ubi9/openjdk-21-runtime:1.24</ubi9.runtime.image>

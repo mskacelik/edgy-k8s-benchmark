@@ -1,0 +1,36 @@
+name: a-edgy
+threads: 6
+
+http:
+  host: http://edgy-gateway:8080
+  sharedConnections: 8192
+
+phases:
+  - rampup:
+      increasingRate:
+        initialUsersPerSec: 1900
+        targetUsersPerSec: 19000
+        duration: 30s
+        maxSessions: 50000
+        scenario: &scenario
+          - read:
+              - randomInt: id <- 1 .. 1000000
+              - httpRequest:
+                  GET: /api/items/${id}
+                  handler:
+                    status:
+                      range: 2xx
+  - hold:
+      constantRate:
+        usersPerSec: 19000
+        duration: 90s
+        maxSessions: 50000
+        startAfter: rampup
+        scenario: *scenario
+  - steady:
+      constantRate:
+        usersPerSec: 19000
+        duration: 3m
+        maxSessions: 50000
+        startAfter: hold
+        scenario: *scenario

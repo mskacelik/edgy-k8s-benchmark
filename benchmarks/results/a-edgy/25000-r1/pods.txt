@@ -1,0 +1,6 @@
+NAME                          READY   STATUS             RESTARTS   AGE     IP              NODE                       NOMINATED NODE   READINESS GATES
+backend-a-76cd7fcc67-v6vqv    0/1     ImagePullBackOff   0          7m55s   10.42.210.159   kub-a17.priv.cerit-sc.cz   <none>           <none>
+backend-a-86cd55c66f-hbft6    1/1     Running            0          23h     10.42.210.161   kub-a17.priv.cerit-sc.cz   <none>           <none>
+edgy-gateway-b886b7f7-t4l8d   1/1     Running            0          39m     10.42.40.36     kub-a14.priv.cerit-sc.cz   <none>           <none>
+hyperfoil-84cc4cc64f-ht2nx    1/1     Running            0          2m57s   10.42.207.240   kub-c6.priv.cerit-sc.cz    <none>           <none>
+postgres-6697468c67-pzkj9     1/1     Running            0          23h     10.42.143.238   kub-d11.priv.cerit-sc.cz   <none>           <none>

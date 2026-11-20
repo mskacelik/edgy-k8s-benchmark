@@ -1,0 +1,17 @@
+=== Kubernetes & Node Info ===
+Client Version: v1.36.2
+Kustomize Version: v5.8.1
+Server Version: v1.36.6+rke2r1
+=== Node CPU Model (via Postgres pod) ===
+model name	: AMD EPYC 9454 48-Core Processor
+Linux postgres-6697468c67-pzkj9 6.8.0-136-generic #136-Ubuntu SMP PREEMPT_DYNAMIC Wed Jul  1 21:53:05 UTC 2026 x86_64 GNU/Linux
+=== Postgres Version ===
+                                                       version                                                        
+----------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 17.12 (Debian 17.12-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+=== Hyperfoil Java & Version ===
+openjdk version "21.0.12.1" 2026-08-18 LTS
+OpenJDK Runtime Environment (Red_Hat-21.0.12.1.1-1) (build 21.0.12.1+1-LTS)
+OpenJDK 64-Bit Server VM (Red_Hat-21.0.12.1.1-1) (build 21.0.12.1+1-LTS, mixed mode, sharing)

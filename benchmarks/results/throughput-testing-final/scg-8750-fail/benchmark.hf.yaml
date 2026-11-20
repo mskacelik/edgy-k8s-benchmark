@@ -1,0 +1,36 @@
+name: a-scg
+threads: 6
+
+http:
+  host: http://scg-gateway:8080
+  sharedConnections: 8192
+
+phases:
+  - rampup:
+      increasingRate:
+        initialUsersPerSec: 875
+        targetUsersPerSec: 8750
+        duration: 30s
+        maxSessions: 50000
+        scenario: &scenario
+          - read:
+              - randomInt: id <- 1 .. 1000000
+              - httpRequest:
+                  GET: /api/items/${id}
+                  handler:
+                    status:
+                      range: 2xx
+  - hold:
+      constantRate:
+        usersPerSec: 8750
+        duration: 90s
+        maxSessions: 50000
+        startAfter: rampup
+        scenario: *scenario
+  - steady:
+      constantRate:
+        usersPerSec: 8750
+        duration: 3m
+        maxSessions: 50000
+        startAfter: hold
+        scenario: *scenario

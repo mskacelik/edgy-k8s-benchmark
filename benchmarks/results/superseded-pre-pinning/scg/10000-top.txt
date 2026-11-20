@@ -1,0 +1,40 @@
+=== Sample 1 (22:40:59) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     917m         298Mi           
+backend-b-d6d85fd44-c8cg7      2m           192Mi           
+consul-84f59b84c-d8bkq         7m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5     1049m        3383Mi          
+postgres-6697468c67-pzkj9      864m         205Mi           
+scg-gateway-6b5bc87c9f-f4wcd   1647m        280Mi           
+=== Sample 2 (22:41:15) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     924m         298Mi           
+backend-b-d6d85fd44-c8cg7      2m           192Mi           
+consul-84f59b84c-d8bkq         5m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5     1049m        3383Mi          
+postgres-6697468c67-pzkj9      758m         206Mi           
+scg-gateway-6b5bc87c9f-f4wcd   1648m        279Mi           
+=== Sample 3 (22:41:31) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     924m         298Mi           
+backend-b-d6d85fd44-c8cg7      3m           192Mi           
+consul-84f59b84c-d8bkq         5m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5     1072m        3383Mi          
+postgres-6697468c67-pzkj9      861m         206Mi           
+scg-gateway-6b5bc87c9f-f4wcd   1648m        281Mi           
+=== Sample 4 (22:41:47) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     927m         298Mi           
+backend-b-d6d85fd44-c8cg7      3m           192Mi           
+consul-84f59b84c-d8bkq         5m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5     979m         3383Mi          
+postgres-6697468c67-pzkj9      873m         205Mi           
+scg-gateway-6b5bc87c9f-f4wcd   1654m        280Mi           
+=== Sample 5 (22:42:02) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     927m         298Mi           
+backend-b-d6d85fd44-c8cg7      3m           192Mi           
+consul-84f59b84c-d8bkq         7m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5     1049m        3384Mi          
+postgres-6697468c67-pzkj9      855m         205Mi           
+scg-gateway-6b5bc87c9f-f4wcd   1607m        280Mi           

@@ -1,0 +1,56 @@
+# Scenario A (pass-through GET), arm: direct, no gateway in the path.
+#
+# Note the path: `/items/${id}`, not `/api/items/${id}`. The gateway arms are
+# what strip the `/api` prefix, so talking to the backend directly must use the
+# backend's own path or every request 404s and the arm measures nothing.
+#
+# When changing the rate, change it in THREE places — `rampup`
+# targetUsersPerSec, `hold` usersPerSec, `steady` usersPerSec — and keep
+# `rampup` initialUsersPerSec at exactly one tenth of the target. See
+# a-scg.hf.yaml for why, and keep threads / sharedConnections / maxSessions
+# identical across all three arms.
+#
+# This is the arm where the GENERATOR is most likely to be the limit rather
+# than the system under test. The 24000 attempt on 2026-11-18 logged 104
+# "CPU n was used for ..%" warnings peaking at 100 % and died during rampup,
+# with the generator still on 4 CPU. It now has 6. Check `info.errors` in the
+# exported JSON on every run of this arm: more than a handful of those warnings
+# means the number is a property of Hyperfoil, not of the backend. If the
+# ceiling cannot be reached even with the generator scaled, report the cell as
+# "≥ X req/s, generator-limited" — PLAN-CH7.md §5.1 permits that for this arm
+# and only this arm.
+name: a-direct
+threads: 6
+
+http:
+  host: http://backend-a:8080
+  sharedConnections: 8192
+
+phases:
+- rampup:
+    increasingRate:
+      initialUsersPerSec: 810
+      targetUsersPerSec: 8100
+      duration: 30s
+      maxSessions: 50000
+      scenario: &scenario
+      - read:
+        - randomInt: id <- 1 .. 1000000
+        - httpRequest:
+            GET: /items/${id}
+- hold:
+    constantRate:
+      usersPerSec: 8100
+      duration: 90s
+      maxSessions: 50000
+      startAfter: rampup
+      scenario: *scenario
+# 3m for a throughput bisection step, 10m for a latency run. Only this phase is
+# evaluated.
+- steady:
+    constantRate:
+      usersPerSec: 8100
+      duration: 10m
+      maxSessions: 50000
+      startAfter: hold
+      scenario: *scenario

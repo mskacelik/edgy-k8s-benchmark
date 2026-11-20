@@ -1,0 +1,12 @@
+NAME                         CPU(cores)   MEMORY(bytes)
+backend-a-86cd55c66f-hbft6   932m         210Mi
+hyperfoil-68c64f7895-5ql5g   814m         314Mi
+postgres-6697468c67-pzkj9    848m         205Mi
+---
+backend-a-86cd55c66f-hbft6   914m         210Mi
+hyperfoil-68c64f7895-5ql5g   816m         340Mi
+postgres-6697468c67-pzkj9    806m         205Mi
+---
+backend-a-86cd55c66f-hbft6   921m         210Mi
+hyperfoil-68c64f7895-5ql5g   882m         357Mi
+postgres-6697468c67-pzkj9    856m         205Mi

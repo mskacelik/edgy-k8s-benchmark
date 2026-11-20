@@ -1,0 +1,11 @@
+timestamp_utc: 2026-11-18T19:28:33Z
+arm: a-edgy
+rate: 25000
+rep: 1
+git_commit: c84902e
+sharedConnections: 2048
+maxSessions: 20000
+steady_samples: 12
+images: backend-a-76cd7fcc67-v6vqv=ghcr.io/mskacelik/bench-backend backend-a-86cd55c66f-hbft6=ghcr.io/mskacelik/bench-backend:ee77d00 edgy-gateway-b886b7f7-t4l8d=ghcr.io/mskacelik/bench-edgy-gateway:ee77d00 hyperfoil-84cc4cc64f-ht2nx=quay.io/hyperfoil/hyperfoil:latest postgres-6697468c67-pzkj9=postgres:17 
+limits: backend-a-76cd7fcc67-v6vqv(cpu=6,mem=4Gi) backend-a-86cd55c66f-hbft6(cpu=3,mem=3Gi) edgy-gateway-b886b7f7-t4l8d(cpu=2,mem=2Gi) hyperfoil-84cc4cc64f-ht2nx(cpu=4,mem=4Gi) postgres-6697468c67-pzkj9(cpu=4,mem=8Gi) 
+verdict: INVALID

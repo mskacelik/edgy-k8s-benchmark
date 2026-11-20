@@ -1,5 +1,15 @@
 # Both start at replicas: 0. Scale up only the arm under test, so the other
-# gateway never competes for the namespace quota during a run.
+# gateway never competes for the namespace quota during a run. Leave them at 0
+# in git — a committed `replicas: 1` means the next `apply -k` quietly brings a
+# second gateway up during someone else's measurement.
+#
+# Both gateways pin to the SAME node, which is stronger than giving each its
+# own: the two arms are then generated across the identical network path, so
+# nothing of the node or its link can be mistaken for a difference between the
+# gateways. Only one is ever up at a time, so they never contend.
+#
+# DO NOT CHANGE resources OR nodeSelector WITHOUT RE-RUNNING EVERY CELL.
+# See docs/RUN-PLAN.md §2.
 apiVersion: v1
 kind: Service
 metadata:
@@ -35,6 +45,8 @@ spec:
         app: edgy-gateway
         role: gateway
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: kub-b7.priv.cerit-sc.cz
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -94,6 +106,9 @@ spec:
         app: scg-gateway
         role: gateway
     spec:
+      # Same node as edgy-gateway, deliberately. See the header.
+      nodeSelector:
+        kubernetes.io/hostname: kub-b7.priv.cerit-sc.cz
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -137,3 +152,143 @@ spec:
         - name: tls
           secret:
             secretName: gateway-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edgy-gateway-native
+spec:
+  selector:
+    app: edgy-gateway-native
+  ports:
+  - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edgy-gateway-native
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: edgy-gateway-native
+  template:
+    metadata:
+      labels:
+        app: edgy-gateway-native
+        role: gateway
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: kub-b7.priv.cerit-sc.cz
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values: [backend, database]
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: gateway
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+        image: ghcr.io/mskacelik/bench-edgy-gateway-native
+        envFrom:
+        - configMapRef:
+            name: gateway-env
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: tls
+          mountPath: /deployments/tls
+          readOnly: true
+        readinessProbe:
+          httpGet: { path: /api/items/1, port: 8080 }
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          requests: { cpu: "2", memory: 2Gi }
+          limits: { cpu: "2", memory: 2Gi }
+      volumes:
+      - name: tls
+        secret:
+          secretName: gateway-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scg-gateway-native
+spec:
+  selector:
+    app: scg-gateway-native
+  ports:
+  - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scg-gateway-native
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: scg-gateway-native
+  template:
+    metadata:
+      labels:
+        app: scg-gateway-native
+        role: gateway
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: kub-b7.priv.cerit-sc.cz
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values: [backend, database]
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: gateway
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+        image: ghcr.io/mskacelik/bench-scg-gateway-native
+        envFrom:
+        - configMapRef:
+            name: gateway-env
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: tls
+          mountPath: /deployments/tls
+          readOnly: true
+        readinessProbe:
+          httpGet: { path: /api/items/1, port: 8080 }
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          requests: { cpu: "2", memory: 2Gi }
+          limits: { cpu: "2", memory: 2Gi }
+      volumes:
+      - name: tls
+        secret:
+          secretName: gateway-tls

@@ -1,0 +1,58 @@
+# Scenario A (pass-through GET), arm: Edgy, JVM mode.
+#
+# When changing the rate, change it in THREE places — `rampup`
+# targetUsersPerSec, `hold` usersPerSec, `steady` usersPerSec — and keep
+# `rampup` initialUsersPerSec at exactly one tenth of the target. See
+# a-scg.hf.yaml for why, and keep threads / sharedConnections / maxSessions
+# identical across all three arms.
+#
+# Bracket as of 2026-11-18: 18000 passed its steady phase (3.96 M requests,
+# zero failures, p99 8.52 ms) with the gateway at 94 % CPU, so the ceiling is
+# just above it. Try 23000 and 24000 next. Do NOT take 18000 as the ceiling —
+# the cell that suggested it was measured against a freshly re-seeded Postgres
+# sharing a node with the backend, and the 25000 cell never ran at all
+# (ImagePullBackOff on the backend).
+name: a-edgy-native
+threads: 6
+
+http:
+  host: http://edgy-gateway-native:8080
+  sharedConnections: 8192
+
+phases:
+- rampup:
+    increasingRate:
+      initialUsersPerSec: 810
+      targetUsersPerSec: 8100
+      duration: 30s
+      maxSessions: 50000
+      scenario: &scenario
+      - read:
+        - randomInt: id <- 1 .. 1000000
+        - httpRequest:
+            GET: /api/items/${id}
+            # PLAN-CH7.md §5.1's first pass condition counts non-2xx responses
+            # as failed requests. Without a validator Hyperfoil does not look at
+            # the status at all, so `invalid` stays 0 and a run answering 404 to
+            # everything scores clean — which is exactly what a-direct/24000-r1
+            # did. Anything outside 2xx now lands in the steady phase's `invalid`
+            # counter and verdict.py fails the cell on it.
+            handler:
+              status:
+                range: 2xx
+- hold:
+    constantRate:
+      usersPerSec: 8100
+      duration: 90s
+      maxSessions: 50000
+      startAfter: rampup
+      scenario: *scenario
+# 3m for a throughput bisection step, 10m for a latency run. Only this phase is
+# evaluated.
+- steady:
+    constantRate:
+      usersPerSec: 8100
+      duration: 10m
+      maxSessions: 50000
+      startAfter: hold
+      scenario: *scenario

@@ -1,0 +1,51 @@
+# Scenario A (pass-through GET), arm: Spring Cloud Gateway.
+#
+# When changing the rate, change it in THREE places — `rampup`
+# targetUsersPerSec, `hold` usersPerSec, `steady` usersPerSec — and keep
+# `rampup` initialUsersPerSec at exactly one tenth of the target. The warm-up is
+# specified relative to each run's own rate; leaving one behind warms candidates
+# unequally and invalidates the bisection without leaving a trace in the report.
+#
+# `sharedConnections`, `maxSessions` and `threads` MUST be identical in all
+# three a-*.hf.yaml files. They are matched variables (PLAN-CH7.md §4.4), not
+# per-arm tuning. 8192 connections cannot bind before an arm's knee: at these
+# rates it would take a mean response time above 800 ms to exhaust them, so
+# "blocked waiting for a free connection" is a saturation signal, not a cap.
+#
+# Converged: 9000 passes clean, 9750 fails hard (steady p99 662 ms). This file
+# sits at the pass side for the confirmation repetitions.
+name: a-scg
+threads: 6
+
+http:
+  host: http://scg-gateway:8080
+  sharedConnections: 8192
+
+phases:
+- rampup:
+    increasingRate:
+      initialUsersPerSec: 950
+      targetUsersPerSec: 9000
+      duration: 30s
+      maxSessions: 50000
+      scenario: &scenario
+      - read:
+        - randomInt: id <- 1 .. 1000000
+        - httpRequest:
+            GET: /api/items/${id}
+- hold:
+    constantRate:
+      usersPerSec: 9000
+      duration: 90s
+      maxSessions: 50000
+      startAfter: rampup
+      scenario: *scenario
+# 3m for a throughput bisection step, 10m for a latency run. Only this phase is
+# evaluated.
+- steady:
+    constantRate:
+      usersPerSec: 9000
+      duration: 3m
+      maxSessions: 50000
+      startAfter: hold
+      scenario: *scenario

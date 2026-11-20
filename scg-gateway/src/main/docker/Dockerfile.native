@@ -1,0 +1,29 @@
+# JDK generation matched to the Mandrel builder the Edgy gateway uses, so the two
+# native binaries differ by framework and not by GraalVM vintage.
+ARG GRAALVM_IMAGE=ghcr.io/graalvm/native-image-community:25-ol9
+
+FROM ${GRAALVM_IMAGE} AS build
+USER root
+WORKDIR /build
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+COPY backend-service/pom.xml backend-service/pom.xml
+COPY edgy-gateway/pom.xml edgy-gateway/pom.xml
+COPY scg-gateway/pom.xml scg-gateway/pom.xml
+COPY scg-gateway/src scg-gateway/src
+# The wrapper is distributionType=only-script: it fetches and unpacks Maven itself.
+RUN microdnf install -y curl unzip && chmod +x mvnw
+RUN --mount=type=cache,target=/root/.m2/repository \
+    ./mvnw -pl scg-gateway package -DskipTests -Dnative
+
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6
+
+WORKDIR /work
+COPY --from=build --chown=1001:root --chmod=0755 /build/scg-gateway/target/scg-gateway /work/application
+
+EXPOSE 8080
+USER 1001
+
+# MaximumHeapSizePercent is the same SubstrateVM knob the Edgy native image sets.
+# reactor.netty.native=false keeps this off the epoll path, as the JVM image does.
+ENTRYPOINT ["./application", "-XX:MaximumHeapSizePercent=75", "-Dreactor.netty.native=false"]

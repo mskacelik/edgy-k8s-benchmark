@@ -1,0 +1,84 @@
+=== Sample 1/12 (19:27:50) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1489m        264Mi           
+backend-b-7455697f45-lslh8      1m           186Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1709m        161Mi           
+hyperfoil-755688f469-qc46b      1419m        6502Mi          
+postgres-7f494dd6f7-dlqpm       1047m        193Mi           
+=== Sample 2/12 (19:28:06) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1485m        264Mi           
+backend-b-7455697f45-lslh8      1m           186Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1706m        170Mi           
+hyperfoil-755688f469-qc46b      1419m        6502Mi          
+postgres-7f494dd6f7-dlqpm       1047m        193Mi           
+=== Sample 3/12 (19:28:21) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1479m        266Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1705m        203Mi           
+hyperfoil-755688f469-qc46b      1429m        6503Mi          
+postgres-7f494dd6f7-dlqpm       1088m        194Mi           
+=== Sample 4/12 (19:28:37) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1469m        264Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1711m        169Mi           
+hyperfoil-755688f469-qc46b      1429m        6503Mi          
+postgres-7f494dd6f7-dlqpm       1081m        194Mi           
+=== Sample 5/12 (19:28:53) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1476m        264Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1719m        168Mi           
+hyperfoil-755688f469-qc46b      1422m        6503Mi          
+postgres-7f494dd6f7-dlqpm       1124m        193Mi           
+=== Sample 6/12 (19:29:08) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1473m        263Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1722m        174Mi           
+hyperfoil-755688f469-qc46b      1399m        6504Mi          
+postgres-7f494dd6f7-dlqpm       1233m        193Mi           
+=== Sample 7/12 (19:29:24) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1477m        263Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1726m        205Mi           
+hyperfoil-755688f469-qc46b      1377m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1095m        193Mi           
+=== Sample 8/12 (19:29:40) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1391m        262Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1726m        205Mi           
+hyperfoil-755688f469-qc46b      1059m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1025m        193Mi           
+=== Sample 9/12 (19:29:55) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1508m        264Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1728m        173Mi           
+hyperfoil-755688f469-qc46b      1315m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1135m        193Mi           
+=== Sample 10/12 (19:30:11) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1479m        264Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1712m        171Mi           
+hyperfoil-755688f469-qc46b      1397m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1049m        193Mi           
+=== Sample 11/12 (19:30:26) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1475m        263Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1726m        176Mi           
+hyperfoil-755688f469-qc46b      1326m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1049m        193Mi           
+=== Sample 12/12 (19:30:42) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1378m        262Mi           
+backend-b-7455697f45-lslh8      1m           185Mi           
+edgy-gateway-7ddbbc8b9c-rdmt2   1830m        241Mi           
+hyperfoil-755688f469-qc46b      1348m        6505Mi          
+postgres-7f494dd6f7-dlqpm       1051m        193Mi           

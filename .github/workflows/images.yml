@@ -100,6 +100,8 @@ jobs:
             build -t "$REGISTRY/bench-edgy-gateway-native:$TAG" \
               -f edgy-gateway/src/main/docker/Dockerfile.native \
               --build-context "m2repo=$HOME/.m2/repository/org/acme" .
+            build -t "$REGISTRY/bench-scg-gateway-native:$TAG" \
+              -f scg-gateway/src/main/docker/Dockerfile.native .
           fi
 
           echo "### Images built at tag \`$TAG\`" >> "$GITHUB_STEP_SUMMARY"

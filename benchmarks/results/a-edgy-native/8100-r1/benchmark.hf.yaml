@@ -1,0 +1,49 @@
+# Scenario A (pass-through GET), arm: Edgy, JVM mode.
+#
+# When changing the rate, change it in THREE places — `rampup`
+# targetUsersPerSec, `hold` usersPerSec, `steady` usersPerSec — and keep
+# `rampup` initialUsersPerSec at exactly one tenth of the target. See
+# a-scg.hf.yaml for why, and keep threads / sharedConnections / maxSessions
+# identical across all three arms.
+#
+# Bracket as of 2026-11-18: 18000 passed its steady phase (3.96 M requests,
+# zero failures, p99 8.52 ms) with the gateway at 94 % CPU, so the ceiling is
+# just above it. Try 23000 and 24000 next. Do NOT take 18000 as the ceiling —
+# the cell that suggested it was measured against a freshly re-seeded Postgres
+# sharing a node with the backend, and the 25000 cell never ran at all
+# (ImagePullBackOff on the backend).
+name: a-edgy-native
+threads: 6
+
+http:
+  host: http://edgy-gateway-native:8080
+  sharedConnections: 8192
+
+phases:
+- rampup:
+    increasingRate:
+      initialUsersPerSec: 810
+      targetUsersPerSec: 8100
+      duration: 30s
+      maxSessions: 50000
+      scenario: &scenario
+      - read:
+        - randomInt: id <- 1 .. 1000000
+        - httpRequest:
+            GET: /api/items/${id}
+- hold:
+    constantRate:
+      usersPerSec: 8100
+      duration: 90s
+      maxSessions: 50000
+      startAfter: rampup
+      scenario: *scenario
+# 3m for a throughput bisection step, 10m for a latency run. Only this phase is
+# evaluated.
+- steady:
+    constantRate:
+      usersPerSec: 8100
+      duration: 10m
+      maxSessions: 50000
+      startAfter: hold
+      scenario: *scenario

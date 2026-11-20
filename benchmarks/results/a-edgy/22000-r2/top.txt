@@ -1,0 +1,7 @@
+=== Sample 1/12 (18:56:29) ===
+NAME                            CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766      1646m        263Mi           
+backend-b-7455697f45-lslh8      1m           188Mi           
+edgy-gateway-7ddbbc8b9c-p9ngz   1870m        523Mi           
+hyperfoil-5c9f9bc594-l6sbm      1111m        6493Mi          
+postgres-7f494dd6f7-dlqpm       1239m        193Mi           

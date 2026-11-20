@@ -21,7 +21,13 @@ spec:
     metadata:
       labels:
         app: consul
+        role: discovery
     spec:
+      # Pinned like everything else, so the discovery hop in scenario C is the
+      # same hop in every cell. Only scenario C needs Consul; it can be scaled
+      # to 0 to free quota during scenarios A and B.
+      nodeSelector:
+        kubernetes.io/hostname: kub-a13.priv.cerit-sc.cz
       # The namespace enforces the restricted Pod Security Standard.
       securityContext:
         runAsNonRoot: true
@@ -37,6 +43,13 @@ spec:
             capabilities:
               drop: [ALL]
           image: hashicorp/consul:1.22
+          env:
+            # The image entrypoint chowns /consul/config and /consul/data before
+            # dropping privileges. The config dir is a read-only configMap mount,
+            # so the chown fails and the container exits. The pod already runs as
+            # the consul uid, so the entrypoint's privilege handling is redundant.
+            - name: CONSUL_DISABLE_PERM_MGMT
+              value: "1"
           args:
             - consul
             - agent

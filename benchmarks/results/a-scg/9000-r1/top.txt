@@ -1,0 +1,96 @@
+=== Sample 1/12 (19:29:41) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     850m         298Mi           
+backend-b-d6d85fd44-c8cg7      2m           185Mi           
+consul-84f59b84c-d8bkq         4m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1137m        3333Mi          
+postgres-6697468c67-pzkj9      707m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1522m        264Mi           
+=== Sample 2/12 (19:29:56) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     844m         300Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         4m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1149m        3333Mi          
+postgres-6697468c67-pzkj9      732m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1522m        264Mi           
+=== Sample 3/12 (19:30:12) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     838m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1133m        3334Mi          
+postgres-6697468c67-pzkj9      735m         205Mi           
+scg-gateway-77c8dfb76b-j8rst   1568m        265Mi           
+=== Sample 4/12 (19:30:27) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     838m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1116m        3331Mi          
+postgres-6697468c67-pzkj9      776m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1568m        265Mi           
+=== Sample 5/12 (19:30:43) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     840m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         4m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1118m        3332Mi          
+postgres-6697468c67-pzkj9      776m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1548m        265Mi           
+=== Sample 6/12 (19:30:59) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     835m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1131m        3332Mi          
+postgres-6697468c67-pzkj9      713m         205Mi           
+scg-gateway-77c8dfb76b-j8rst   1548m        265Mi           
+=== Sample 7/12 (19:31:14) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     837m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1138m        3333Mi          
+postgres-6697468c67-pzkj9      755m         205Mi           
+scg-gateway-77c8dfb76b-j8rst   1546m        264Mi           
+=== Sample 8/12 (19:31:30) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     837m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1124m        3332Mi          
+postgres-6697468c67-pzkj9      674m         205Mi           
+scg-gateway-77c8dfb76b-j8rst   1546m        264Mi           
+=== Sample 9/12 (19:31:45) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     840m         299Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         4m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1117m        3333Mi          
+postgres-6697468c67-pzkj9      704m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1550m        264Mi           
+=== Sample 10/12 (19:32:01) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     839m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1099m        3332Mi          
+postgres-6697468c67-pzkj9      749m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1559m        265Mi           
+=== Sample 11/12 (19:32:16) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     842m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1099m        3332Mi          
+postgres-6697468c67-pzkj9      749m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1546m        266Mi           
+=== Sample 12/12 (19:32:32) ===
+NAME                           CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6     842m         298Mi           
+backend-b-d6d85fd44-c8cg7      1m           185Mi           
+consul-84f59b84c-d8bkq         5m           26Mi            
+hyperfoil-78d858f7f-pk5nh      1073m        3332Mi          
+postgres-6697468c67-pzkj9      784m         206Mi           
+scg-gateway-77c8dfb76b-j8rst   1550m        265Mi           

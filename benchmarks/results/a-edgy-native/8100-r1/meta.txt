@@ -1,0 +1,32 @@
+timestamp_utc: 2026-11-19T15:54:39Z
+arm: a-edgy-native
+rate: 8100
+rep: 1
+git_commit: c84902e (DIRTY WORKING TREE)
+host: http://edgy-gateway-native:8080
+threads: 6
+sharedConnections: 8192
+maxSessions: 50000
+steady_samples: 40
+nodes: backend-a-5f95886984-2g766@kub-a17.priv.cerit-sc.cz backend-b-7455697f45-lslh8@kub-a15.priv.cerit-sc.cz consul-6cc65dd854-d457p@ edgy-gateway-native-57955466b9-5vf4w@kub-a14.priv.cerit-sc.cz hyperfoil-5554555c98-4jhmp@kub-b4.priv.cerit-sc.cz postgres-7f494dd6f7-dlqpm@kub-c4.priv.cerit-sc.cz 
+images: backend-a-5f95886984-2g766=ghcr.io/mskacelik/bench-backend:ee77d00 backend-b-7455697f45-lslh8=ghcr.io/mskacelik/bench-backend:ee77d00 consul-6cc65dd854-d457p=hashicorp/consul:1.22 edgy-gateway-native-57955466b9-5vf4w=ghcr.io/mskacelik/bench-edgy-gateway-native:ee77d00 hyperfoil-5554555c98-4jhmp=quay.io/hyperfoil/hyperfoil@sha256:492c5cb4a5d5201adb60e53a012337e7ae932f24db98ef5477f580a37cf2e8f8 postgres-7f494dd6f7-dlqpm=postgres:17 
+limits: backend-a-5f95886984-2g766(cpu=3,mem=3Gi) backend-b-7455697f45-lslh8(cpu=3,mem=3Gi) consul-6cc65dd854-d457p(cpu=1,mem=1Gi) edgy-gateway-native-57955466b9-5vf4w(cpu=2,mem=2Gi) hyperfoil-5554555c98-4jhmp(cpu=6,mem=8Gi) postgres-7f494dd6f7-dlqpm(cpu=4,mem=8Gi) 
+postgres_pod_age: 2026-11-18T21:02:11Z
+dirty_tree_base: c84902e
+dirty_tree_at_capture: .gitignore k8s/backends.yaml k8s/consul.yaml k8s/gateways.yaml
+  k8s/hyperfoil.yaml k8s/postgres.yaml kustomization.yaml benchmarks/a-direct.hf.yaml
+  benchmarks/a-edgy.hf.yaml benchmarks/a-edgy-native.hf.yaml benchmarks/a-scg.hf.yaml
+  (deleted benchmarks/scenario-a.hf.yaml) scripts/capture-cell.sh scripts/verdict.py docs/
+dirty_tree_note: This cell was captured from an uncommitted working tree on top of
+  c84902e, so capture-cell.sh stamped it DIRTY WORKING TREE. The uncommitted content
+  is the pinning of RUN-PLAN.md §2.5, the matched generator settings of §2.1, the
+  direct-arm path fix, the backend-lb Service of §2.3 and the edgy-gateway-native
+  Deployment -- all of which ARE in the first commit made after 2026-11-19, so the
+  configuration under which this cell ran is recoverable as `git show <that commit>`.
+  NOT in effect during this cell, because they were written afterwards on 2026-11-19:
+  the 2xx status validator in the benchmark files, the phase-split and error gating in
+  scripts/verdict.py, and scripts/reset-cell.sh. The validator is the only one that
+  touches what was measured: this repetition ran without response-status checking, so
+  its "zero failed requests" rests on connection/timeout counters alone, not on non-2xx.
+  Repetitions 2 and 3 run with the validator. RUN-PLAN.md §2.7.
+verdict: PASS

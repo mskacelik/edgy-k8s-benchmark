@@ -1,0 +1,7 @@
+NAME                                   READY   STATUS    RESTARTS   AGE    IP             NODE                       NOMINATED NODE   READINESS GATES
+backend-a-5f95886984-2g766             1/1     Running   0          19h    10.42.210.43   kub-a17.priv.cerit-sc.cz   <none>           <none>
+backend-b-7455697f45-lslh8             1/1     Running   0          19h    10.42.17.143   kub-a15.priv.cerit-sc.cz   <none>           <none>
+consul-6cc65dd854-d457p                0/1     Pending   0          4m3s   <none>         <none>                     <none>           <none>
+edgy-gateway-native-57955466b9-5vf4w   1/1     Running   0          4m1s   10.42.40.18    kub-a14.priv.cerit-sc.cz   <none>           <none>
+hyperfoil-5554555c98-4jhmp             1/1     Running   0          3m2s   10.42.240.49   kub-b4.priv.cerit-sc.cz    <none>           <none>
+postgres-7f494dd6f7-dlqpm              1/1     Running   0          18h    10.42.166.44   kub-c4.priv.cerit-sc.cz    <none>           <none>

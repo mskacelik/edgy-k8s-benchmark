@@ -1,0 +1,40 @@
+=== Sample 1 (22:26:55) ===
+NAME                          CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6    936m         300Mi           
+backend-b-d6d85fd44-c8cg7     2m           192Mi           
+consul-84f59b84c-d8bkq        7m           23Mi            
+edgy-gateway-b886b7f7-k47zz   1069m        142Mi           
+hyperfoil-7dc8d59b5f-k2zj5    771m         3335Mi          
+postgres-6697468c67-pzkj9     815m         205Mi           
+=== Sample 2 (22:27:11) ===
+NAME                          CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6    943m         299Mi           
+backend-b-d6d85fd44-c8cg7     2m           192Mi           
+consul-84f59b84c-d8bkq        7m           23Mi            
+edgy-gateway-b886b7f7-k47zz   1075m        140Mi           
+hyperfoil-7dc8d59b5f-k2zj5    791m         3336Mi          
+postgres-6697468c67-pzkj9     844m         205Mi           
+=== Sample 3 (22:27:27) ===
+NAME                          CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6    943m         299Mi           
+backend-b-d6d85fd44-c8cg7     3m           192Mi           
+consul-84f59b84c-d8bkq        5m           23Mi            
+edgy-gateway-b886b7f7-k47zz   1087m        140Mi           
+hyperfoil-7dc8d59b5f-k2zj5    754m         3335Mi          
+postgres-6697468c67-pzkj9     828m         205Mi           
+=== Sample 4 (22:27:42) ===
+NAME                          CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6    945m         300Mi           
+backend-b-d6d85fd44-c8cg7     2m           192Mi           
+consul-84f59b84c-d8bkq        6m           23Mi            
+edgy-gateway-b886b7f7-k47zz   1087m        143Mi           
+hyperfoil-7dc8d59b5f-k2zj5    766m         3335Mi          
+postgres-6697468c67-pzkj9     860m         206Mi           
+=== Sample 5 (22:27:58) ===
+NAME                          CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6    931m         300Mi           
+backend-b-d6d85fd44-c8cg7     2m           192Mi           
+consul-84f59b84c-d8bkq        6m           23Mi            
+edgy-gateway-b886b7f7-k47zz   1087m        143Mi           
+hyperfoil-7dc8d59b5f-k2zj5    773m         3335Mi          
+postgres-6697468c67-pzkj9     858m         206Mi           

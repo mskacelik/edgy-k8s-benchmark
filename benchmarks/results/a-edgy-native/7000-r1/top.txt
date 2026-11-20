@@ -1,0 +1,84 @@
+=== Sample 1/12 (12:32:47) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             673m         272Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1127m        82Mi            
+hyperfoil-798fccc8cb-c72zv             686m         6492Mi          
+postgres-7f494dd6f7-dlqpm              461m         193Mi           
+=== Sample 2/12 (12:33:02) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             668m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1160m        90Mi            
+hyperfoil-798fccc8cb-c72zv             748m         6492Mi          
+postgres-7f494dd6f7-dlqpm              461m         193Mi           
+=== Sample 3/12 (12:33:18) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             670m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1154m        82Mi            
+hyperfoil-798fccc8cb-c72zv             741m         6492Mi          
+postgres-7f494dd6f7-dlqpm              458m         193Mi           
+=== Sample 4/12 (12:33:34) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             673m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1174m        87Mi            
+hyperfoil-798fccc8cb-c72zv             707m         6493Mi          
+postgres-7f494dd6f7-dlqpm              463m         195Mi           
+=== Sample 5/12 (12:33:49) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             672m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1178m        87Mi            
+hyperfoil-798fccc8cb-c72zv             735m         6493Mi          
+postgres-7f494dd6f7-dlqpm              469m         194Mi           
+=== Sample 6/12 (12:34:05) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             673m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1142m        82Mi            
+hyperfoil-798fccc8cb-c72zv             690m         6493Mi          
+postgres-7f494dd6f7-dlqpm              486m         194Mi           
+=== Sample 7/12 (12:34:21) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             670m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1150m        74Mi            
+hyperfoil-798fccc8cb-c72zv             682m         6493Mi          
+postgres-7f494dd6f7-dlqpm              465m         194Mi           
+=== Sample 8/12 (12:34:36) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             672m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1149m        77Mi            
+hyperfoil-798fccc8cb-c72zv             690m         6495Mi          
+postgres-7f494dd6f7-dlqpm              465m         194Mi           
+=== Sample 9/12 (12:34:52) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             668m         274Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1177m        76Mi            
+hyperfoil-798fccc8cb-c72zv             692m         6494Mi          
+postgres-7f494dd6f7-dlqpm              469m         195Mi           
+=== Sample 10/12 (12:35:07) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             673m         275Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1151m        75Mi            
+hyperfoil-798fccc8cb-c72zv             683m         6494Mi          
+postgres-7f494dd6f7-dlqpm              461m         193Mi           
+=== Sample 11/12 (12:35:23) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             672m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1151m        75Mi            
+hyperfoil-798fccc8cb-c72zv             676m         6494Mi          
+postgres-7f494dd6f7-dlqpm              462m         193Mi           
+=== Sample 12/12 (12:35:39) ===
+NAME                                   CPU(cores)   MEMORY(bytes)   
+backend-a-5f95886984-2g766             672m         273Mi           
+backend-b-7455697f45-lslh8             1m           182Mi           
+edgy-gateway-native-7697459b5b-8kcbs   1161m        79Mi            
+hyperfoil-798fccc8cb-c72zv             677m         6494Mi          
+postgres-7f494dd6f7-dlqpm              474m         193Mi           

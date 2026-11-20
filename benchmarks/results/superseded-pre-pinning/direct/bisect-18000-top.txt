@@ -1,0 +1,35 @@
+=== Sample 1 (22:17:40) ===
+NAME                         CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6   1551m        299Mi           
+backend-b-d6d85fd44-c8cg7    2m           191Mi           
+consul-84f59b84c-d8bkq       5m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5   1232m        3312Mi          
+postgres-6697468c67-pzkj9    1265m        206Mi           
+=== Sample 2 (22:17:56) ===
+NAME                         CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6   1553m        301Mi           
+backend-b-d6d85fd44-c8cg7    2m           191Mi           
+consul-84f59b84c-d8bkq       4m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5   1190m        3312Mi          
+postgres-6697468c67-pzkj9    1269m        204Mi           
+=== Sample 3 (22:18:11) ===
+NAME                         CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6   1540m        299Mi           
+backend-b-d6d85fd44-c8cg7    3m           191Mi           
+consul-84f59b84c-d8bkq       6m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5   1101m        3313Mi          
+postgres-6697468c67-pzkj9    1155m        205Mi           
+=== Sample 4 (22:18:27) ===
+NAME                         CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6   1542m        299Mi           
+backend-b-d6d85fd44-c8cg7    3m           191Mi           
+consul-84f59b84c-d8bkq       8m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5   1119m        3312Mi          
+postgres-6697468c67-pzkj9    1096m        204Mi           
+=== Sample 5 (22:18:42) ===
+NAME                         CPU(cores)   MEMORY(bytes)   
+backend-a-86cd55c66f-hbft6   1538m        300Mi           
+backend-b-d6d85fd44-c8cg7    2m           191Mi           
+consul-84f59b84c-d8bkq       8m           23Mi            
+hyperfoil-7dc8d59b5f-k2zj5   1208m        3312Mi          
+postgres-6697468c67-pzkj9    1215m        205Mi           

@@ -19,7 +19,10 @@ images:
     newTag: ee77d00
   - name: ghcr.io/mskacelik/bench-scg-gateway
     newTag: ee77d00
-
+  - name: ghcr.io/mskacelik/bench-edgy-gateway-native
+    newTag: ee77d00
+  - name: ghcr.io/mskacelik/bench-scg-gateway-native
+    newTag: ee77d00
 configMapGenerator:
   - name: db-seed
     files:

@@ -1,6 +1,18 @@
-# Hyperfoil without the operator, which this namespace cannot install (no CRD
-# rights). The controller creates and deletes agent pods itself through the API,
-# which is what the Role below grants, so agent scale-out is kept.
+# ============================================================================
+# Hyperfoil runs in STANDALONE mode, not under the operator and not as a
+# controller that spawns agent pods. Do not "restore" the controller setup:
+#   - the namespace has no CRD rights, so the operator cannot be installed; and
+#   - the controller builds its agent pod specs itself, without a
+#     securityContext, so the restricted Pod Security Standard rejects them and
+#     this repository has no way to patch them.
+# This is PLAN-CH7.md §6.2 fallback one. What it costs — one generator pod, no
+# scale-out — is reported in the chapter's threats to validity. The Role and
+# RoleBinding below are kept so the controller path can be tried again if the
+# namespace ever gains the rights; they are inert in standalone mode.
+#
+# DO NOT CHANGE resources, JAVA_OPTS OR nodeSelector WITHOUT RE-RUNNING EVERY
+# CELL. See docs/RUN-PLAN.md §2.
+# ============================================================================
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -11,16 +23,16 @@ kind: Role
 metadata:
   name: hyperfoil-controller
 rules:
-  # Narrower than the upstream manifest, which asks for "*" on pods plus
-  # pods/finalizer. A namespace user cannot grant either, so the Role is cut to
-  # what this account actually holds and what the deployer needs: manage agent
-  # pods, read their logs and status.
-  - apiGroups: [""]
-    resources: [pods]
-    verbs: [get, list, watch, create, update, patch, delete, deletecollection]
-  - apiGroups: [""]
-    resources: [pods/log, pods/status]
-    verbs: [get, list, watch]
+# Narrower than the upstream manifest, which asks for "*" on pods plus
+# pods/finalizer. A namespace user cannot grant either, so the Role is cut to
+# what this account actually holds: manage agent pods, read their logs and
+# status.
+- apiGroups: [""]
+  resources: [pods]
+  verbs: [get, list, watch, create, update, patch, delete, deletecollection]
+- apiGroups: [""]
+  resources: [pods/log, pods/status]
+  verbs: [get, list, watch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -31,8 +43,8 @@ roleRef:
   kind: Role
   name: hyperfoil-controller
 subjects:
-  - kind: ServiceAccount
-    name: hyperfoil-controller
+- kind: ServiceAccount
+  name: hyperfoil-controller
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +54,7 @@ spec:
   selector:
     app: hyperfoil
   ports:
-    - port: 8090
+  - port: 8090
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -50,6 +62,11 @@ metadata:
   name: hyperfoil
 spec:
   replicas: 1
+  # Recreate, not RollingUpdate: two generator pods must never be up at once,
+  # both because of the namespace quota and because the second would be
+  # scheduled somewhere arbitrary.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: hyperfoil
@@ -57,27 +74,72 @@ spec:
     metadata:
       labels:
         app: hyperfoil
+        role: generator
     spec:
-      # The namespace enforces the restricted Pod Security Standard.
+      # Pinned. The generator moved across four nodes between runs on
+      # 2026-11-18 — one cell put it on the database's node — and the
+      # measurement path is part of what is being measured. kub-b4 is the node
+      # the clean SCG 9500 and Edgy 22000 cells were generated from.
+      nodeSelector:
+        kubernetes.io/hostname: kub-b4.priv.cerit-sc.cz
+      # Redundant now that placement is pinned, kept as a guard in case the
+      # nodeSelector is ever removed.
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: role
+                  operator: In
+                  values: [backend, gateway, database]
+      # The namespace enforces the restricted Pod Security Standard. runAsUser
+      # 185 is the jboss uid the Hyperfoil image's files are owned by; without
+      # it the image's own entrypoint cannot write its working directories.
       securityContext:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+        runAsUser: 185
+        runAsGroup: 0
       serviceAccountName: hyperfoil-controller
       containers:
-        - name: hyperfoil
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop: [ALL]
-          image: quay.io/hyperfoil/hyperfoil:latest
-          command:
-            - /deployment/bin/controller.sh
-            - -Dio.hyperfoil.deploy.timeout=120000
-            - -Dio.hyperfoil.deployer=k8s
-            - -Dio.hyperfoil.controller.host=0.0.0.0
-          ports:
-            - containerPort: 8090
-          resources:
-            requests: { cpu: "1", memory: 2Gi }
-            limits: { cpu: "1", memory: 2Gi }
+      - name: hyperfoil
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+        # TODO before the first reported run: pin this. A floating :latest on the
+        # load generator means the instrument can change mid-campaign and no
+        # result would show it. Get the version with
+        #   kubectl exec -n skacelik-ns deploy/hyperfoil -- /deployment/bin/cli.sh --version
+        # then replace :latest with that tag and record it in T1.
+        image: quay.io/hyperfoil/hyperfoil@sha256:492c5cb4a5d5201adb60e53a012337e7ae932f24db98ef5477f580a37cf2e8f8
+        env:
+        # Fixed heap, pre-touched, so the generator never pauses to grow it
+        # mid-run. The generator's RSS reached 3.3 GiB against the previous
+        # 4 GiB limit, which is close enough to it to matter; 6 GiB of heap in
+        # an 8 GiB container is the headroom that removes the generator as a
+        # suspect. This is the one pod where requests may exceed what it uses —
+        # it is the instrument, not a subject.
+        - name: JAVA_OPTS
+          value: "-Xms6G -Xmx6G -XX:+UseG1GC -XX:+AlwaysPreTouch -Dio.hyperfoil.controller.host=0.0.0.0"
+        command:
+        - /deployment/bin/standalone.sh
+        ports:
+        - containerPort: 8090
+        # 6 CPU, raised from 4 on 2026-11-18. Hyperfoil's own `info.errors`
+        # logged individual cores above its 80 % threshold in every cell, and
+        # 104 such warnings peaking at 100 % in the direct arm at 24000 req/s,
+        # which is the generator becoming the limit rather than the system
+        # under test. PLAN-CH7.md §5.1 sanctions scaling the generator for
+        # exactly this. Keep `threads:` in the a-*.hf.yaml files equal to this.
+        #
+        # Quota is 20 CPU of requests. This leaves 3+3+4+2+6 = 18 with one
+        # gateway up, so scale consul to 0 during scenarios A and B or the next
+        # pod will not schedule.
+        resources:
+          requests: { cpu: "6", memory: 8Gi }
+          limits: { cpu: "6", memory: 8Gi }

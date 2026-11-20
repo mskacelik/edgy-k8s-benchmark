@@ -21,7 +21,17 @@ spec:
     metadata:
       labels:
         app: postgres
+        role: database
     spec:
+      # ====================================================================
+      # NEVER restart this pod mid-campaign. Storage is an emptyDir, so a
+      # restart re-seeds a million rows AND throws away the buffer cache. The
+      # Edgy 18000 cell on 2026-11-18 was measured just after one and reported
+      # p90 6.7 ms where the same rate had given 0.9 ms the day before. If the
+      # pod does restart, every cell measured afterwards has to be re-run.
+      # ====================================================================
+      nodeSelector:
+        kubernetes.io/hostname: kub-c4.priv.cerit-sc.cz
       # The namespace enforces the restricted Pod Security Standard.
       securityContext:
         runAsNonRoot: true
@@ -37,6 +47,13 @@ spec:
             capabilities:
               drop: [ALL]
           image: postgres:17
+          env:
+            # The emptyDir below is mounted root-owned with fsGroup 999 as the
+            # group, so initdb cannot chmod 0700 the mount point itself. Putting
+            # PGDATA one level down lets postgres create (and therefore own) the
+            # directory it needs to lock down.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           envFrom:
             - secretRef:
                 name: db-credentials

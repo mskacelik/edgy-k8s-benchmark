@@ -1,0 +1,15 @@
+timestamp_utc: 2026-11-19T17:48:10Z
+arm: a-scg
+rate: 8500
+rep: 2
+git_commit: c84902e (DIRTY WORKING TREE)
+host: http://scg-gateway:8080
+threads: 6
+sharedConnections: 8192
+maxSessions: 50000
+steady_samples: 12
+nodes: backend-a-5f95886984-2g766@kub-a17.priv.cerit-sc.cz backend-b-7455697f45-lslh8@kub-a15.priv.cerit-sc.cz hyperfoil-9d698554c-6m9jz@kub-b4.priv.cerit-sc.cz postgres-7f494dd6f7-dlqpm@kub-c4.priv.cerit-sc.cz scg-gateway-54bf8b4698-9db8g@kub-a14.priv.cerit-sc.cz 
+images: backend-a-5f95886984-2g766=ghcr.io/mskacelik/bench-backend:ee77d00 backend-b-7455697f45-lslh8=ghcr.io/mskacelik/bench-backend:ee77d00 hyperfoil-9d698554c-6m9jz=quay.io/hyperfoil/hyperfoil@sha256:492c5cb4a5d5201adb60e53a012337e7ae932f24db98ef5477f580a37cf2e8f8 postgres-7f494dd6f7-dlqpm=postgres:17 scg-gateway-54bf8b4698-9db8g=ghcr.io/mskacelik/bench-scg-gateway:ee77d00 
+limits: backend-a-5f95886984-2g766(cpu=3,mem=3Gi) backend-b-7455697f45-lslh8(cpu=3,mem=3Gi) hyperfoil-9d698554c-6m9jz(cpu=6,mem=8Gi) postgres-7f494dd6f7-dlqpm(cpu=4,mem=8Gi) scg-gateway-54bf8b4698-9db8g(cpu=2,mem=2Gi) 
+postgres_pod_age: 2026-11-18T21:02:11Z
+verdict: FAIL
